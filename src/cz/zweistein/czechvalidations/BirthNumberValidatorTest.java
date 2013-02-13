@@ -95,7 +95,7 @@ public class BirthNumberValidatorTest {
 			BirthNumberValidator.validateBirthNumberHarshly("923456789", null, null);
 			fail();
 		} catch (BirthNumberValidationException e) {
-			assertEquals(BirthNumberValidityError.NINE_DIGITS_BEFROE_1954, e.getErrorCode());
+			assertEquals(BirthNumberValidityError.NINE_DIGITS_BEFORE_1954, e.getErrorCode());
 		}
 	}
 	

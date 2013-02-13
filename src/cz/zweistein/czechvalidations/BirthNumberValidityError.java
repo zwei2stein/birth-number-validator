@@ -8,10 +8,11 @@ package cz.zweistein.czechvalidations;
  *
  */
 public enum BirthNumberValidityError {
+	
 	NULL_PARAM,
 	INVALID_LENGTH,
 	NONNUMERIC_CHARACTER,
-	NINE_DIGITS_BEFROE_1954,
+	NINE_DIGITS_BEFORE_1954,
 	MOD_11_CHECKSUM_FAILUE,
 	SEX_MISMATCH,
 	BIRTH_DATE_MISMATCH,

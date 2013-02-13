@@ -62,7 +62,7 @@ import java.util.Date;
  *	}
  * 
  * @author Petr Prokop <zwei2stein@gmail.com>
- * @version 1.0
+ * @version 1.1
  * @license FreeBSD License
  *
  */
@@ -154,7 +154,7 @@ public class BirthNumberValidator {
 				if ( year < 54) {
 					return true;
 				} else {
-					throw new BirthNumberValidationException("Nine digit birth number after year 1954.", BirthNumberValidityError.NINE_DIGITS_BEFROE_1954);
+					throw new BirthNumberValidationException("Nine digit birth number after year 1954.", BirthNumberValidityError.NINE_DIGITS_BEFORE_1954);
 				}
 			} else {
 
