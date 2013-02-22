@@ -16,6 +16,20 @@ import org.junit.Test;
  */
 public class BirthNumberValidatorTest {
 	
+//	@Test
+//	public void performance() {
+//		
+//		for (int i = 0; i < 166666; i++) { // 1 mil tests
+//			assertEquals(false, BirthNumberValidator.validateBirthNumber("7401040820"));
+//			assertEquals(true, BirthNumberValidator.validateBirthNumber("7801233540"));
+//			assertEquals(false, BirthNumberValidator.validateBirthNumber("9107036658"));
+//			assertEquals(true, BirthNumberValidator.validateBirthNumber("8002104946"));
+//			assertEquals(false, BirthNumberValidator.validateBirthNumber("68292612"));
+//			assertEquals(true, BirthNumberValidator.validateBirthNumber("0531245099"));
+//		}
+//		
+//	}
+	
 	@Test
 	public void nullOrEmptyParam() {
 		assertEquals(false, BirthNumberValidator.validateBirthNumber(null));
@@ -88,14 +102,14 @@ public class BirthNumberValidatorTest {
 	
 	@Test
 	public void nineDigitNumber() {
-		assertEquals(true, BirthNumberValidator.validateBirthNumber("123456789"));
+		assertEquals(true, BirthNumberValidator.validateBirthNumber("130217789"));
 		assertEquals(false, BirthNumberValidator.validateBirthNumber("923456789"));
 		
 		try {
 			BirthNumberValidator.validateBirthNumberHarshly("923456789", null, null);
 			fail();
 		} catch (BirthNumberValidationException e) {
-			assertEquals(BirthNumberValidityError.NINE_DIGITS_BEFORE_1954, e.getErrorCode());
+			assertEquals(BirthNumberValidityError.INVALID_DATE, e.getErrorCode());
 		}
 	}
 	
@@ -136,6 +150,7 @@ public class BirthNumberValidatorTest {
 	@Test
 	public void wrongDate() {
 		assertEquals(false, BirthNumberValidator.validateBirthNumber("1234567895"));
+		assertEquals(false, BirthNumberValidator.validateBirthNumber("0000000000"));
 		
 		try {
 			BirthNumberValidator.validateBirthNumberHarshly("1234567895", null, null);
@@ -169,6 +184,32 @@ public class BirthNumberValidatorTest {
 		assertEquals(true, BirthNumberValidator.validateBirthNumber("280715152"));
 		assertEquals(true, BirthNumberValidator.validateBirthNumber("0531135099"));
 		assertEquals(true, BirthNumberValidator.validateBirthNumber("0681186066"));
+		
+		try {
+			assertEquals(true, BirthNumberValidator.validateBirthNumberHarshly("1111111111", null, null));
+		} catch (BirthNumberValidationException e) {
+			fail();
+		}
+	}
+	
+	@Test
+	public void testNineDigitSuffix() {
+		assertEquals(true, BirthNumberValidator.validateBirthNumber("130217789"));
+		assertEquals(false, BirthNumberValidator.validateBirthNumber("123456000"));
+	}
+	
+	@Test
+	public void testYearDetection() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(1989, 11-1, 2);
+		assertEquals(true, BirthNumberValidator.validateBirthNumber("8911020019", cal.getTime()));
+		
+		cal.set(2021, 11-1, 2);
+		assertEquals(true, BirthNumberValidator.validateBirthNumber("2111020010", cal.getTime()));
+		
+		cal.set(1889, 11-1, 2);
+		assertEquals(true, BirthNumberValidator.validateBirthNumber("891102001", cal.getTime()));
+		
 	}
 
 }

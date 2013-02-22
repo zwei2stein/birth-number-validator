@@ -144,70 +144,68 @@ public class BirthNumberValidator {
 			throw new BirthNumberValidationException("Input parameter does not contain only numbers.", BirthNumberValidityError.NONNUMERIC_CHARACTER);
 		} else {
 
-			int year = Integer.parseInt(birthNumber.substring(0, 2));
-			int month = Integer.parseInt(birthNumber.substring(2, 4));
-			int day = Integer.parseInt(birthNumber.substring(4, 6));
-			//int ext = Integer.parseInt(birthNumber.substring(6, 9)); //not used for validation
+			int year = Integer.parseInt(birthNumber.substring(0, 2), 10);
+			int month = Integer.parseInt(birthNumber.substring(2, 4), 10);
+			int day = Integer.parseInt(birthNumber.substring(4, 6), 10);
+			int ext = Integer.parseInt(birthNumber.substring(6, 9), 10);
 
-			if (birthNumber.length() == 9) {
-				// before year 1954, rc were only 9 digit numbers, 10 digit is invalid
-				if ( year < 54) {
-					return true;
-				} else {
-					throw new BirthNumberValidationException("Nine digit birth number after year 1954.", BirthNumberValidityError.NINE_DIGITS_BEFORE_1954);
-				}
-			} else {
-
-				int checkDigit = Integer.parseInt(birthNumber.substring(9));
-				int mod11 = Integer.parseInt(birthNumber.substring(0, 9)) % 11;
-
+			if (birthNumber.length() == 9 && ext == 0) {
+				throw new BirthNumberValidationException("Nine digit birth number suffix is 000 ", BirthNumberValidityError.NINE_DIGITS_000_SUFFIX);
+			}
+			
+			if (birthNumber.length() == 10) {
+				int checkDigit = Integer.parseInt(birthNumber.substring(9), 10);
+				int mod11 = Integer.parseInt(birthNumber.substring(0, 9), 10) % 11;
+	
 				if (mod11 == 10) {
 					mod11 = 0;
 				}
 				if (mod11 != checkDigit) {
 					throw new BirthNumberValidationException("Mod 11 checksum not matching.", BirthNumberValidityError.MOD_11_CHECKSUM_FAILUE);
 				}
-
-				// restoring year of birth.
-				if (year < 54) {
-					year = 2000 + year;
-				} else {
-					year = 1900 + year;
-				}
-
-				// month > 50 means that birth number belongs to female
-				if (month > 50 && Sex.MALE.equals(sex)) {
-					throw new BirthNumberValidationException("Supplied sex not matching.", BirthNumberValidityError.SEX_MISMATCH);
-				} else if (month < 50 && Sex.FEMALE.equals(sex)) {
-					throw new BirthNumberValidationException("Supplied sex not matching.", BirthNumberValidityError.SEX_MISMATCH);
-				}
-
-				// removing sex offsets from month of birth.
-				if (month > 70 && year > 2003) {
-					month -= 70;
-				} else if (month > 50) {
-					month -= 50;
-				} else if (month > 20 && year > 2003) {
-					month -= 20;
-				}
-
-				Calendar cal = Calendar.getInstance();
-				cal.setLenient(false); // makes calendar throw exception on invalid date
-				try {
-					cal.set(year, month - 1, day); // month starts at 0
-					Date date = cal.getTime();
-
-					if (birthDate != null) {
-						if (!date.equals(birthDate)) {
-							throw new BirthNumberValidationException("Supplied birth date not matching.", BirthNumberValidityError.BIRTH_DATE_MISMATCH);
-						}
-					}
-
-				} catch (IllegalArgumentException e) {
-					throw new BirthNumberValidationException("Invalid birth date.", BirthNumberValidityError.INVALID_DATE);
-				}
-
 			}
+
+			// restoring year of birth.
+			if (year < 54 && birthNumber.length() == 10) {
+				year = 2000 + year;
+			} else if (birthNumber.length() == 10) {
+				year = 1900 + year;
+			} else {
+				year = 1800 + year;
+			}
+
+			// month > 50 means that birth number belongs to female
+			if (month > 50 && Sex.MALE.equals(sex)) {
+				throw new BirthNumberValidationException("Supplied sex not matching.", BirthNumberValidityError.SEX_MISMATCH);
+			} else if (month < 50 && Sex.FEMALE.equals(sex)) {
+				throw new BirthNumberValidationException("Supplied sex not matching.", BirthNumberValidityError.SEX_MISMATCH);
+			}
+
+			// removing sex offsets from month of birth.
+			if (month > 70 && year > 2003) {
+				month -= 70;
+			} else if (month > 50) {
+				month -= 50;
+			} else if (month > 20 && year > 2003) {
+				month -= 20;
+			}
+
+			Calendar cal = Calendar.getInstance();
+			cal.setLenient(false); // makes calendar throw exception on invalid date
+			try {
+				cal.set(year, month - 1, day); // month starts at 0
+				Date date = cal.getTime(); //you need to call get time to make calendar validate date and throw exception
+
+				if (birthDate != null) {
+					if (!birthDate.equals(date)) {
+						throw new BirthNumberValidationException("Supplied birth date not matching.", BirthNumberValidityError.BIRTH_DATE_MISMATCH);
+					}
+				}
+
+			} catch (IllegalArgumentException e) {
+				throw new BirthNumberValidationException("Invalid birth date.", BirthNumberValidityError.INVALID_DATE);
+			}
+			
 		}
 
 		return true;
