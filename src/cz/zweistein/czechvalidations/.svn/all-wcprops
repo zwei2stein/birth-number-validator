@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/2/trunk/src/cz/zweistein/czechvalidations
+END
+Sex.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/src/cz/zweistein/czechvalidations/Sex.java
+END
+BirthNumberValidityError.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/4/trunk/src/cz/zweistein/czechvalidations/BirthNumberValidityError.java
+END
+BirthNumberValidator.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/4/trunk/src/cz/zweistein/czechvalidations/BirthNumberValidator.java
+END
+BirthNumberValidatorTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/4/trunk/src/cz/zweistein/czechvalidations/BirthNumberValidatorTest.java
+END
+BirthNumberValidationException.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/2/trunk/src/cz/zweistein/czechvalidations/BirthNumberValidationException.java
+END
